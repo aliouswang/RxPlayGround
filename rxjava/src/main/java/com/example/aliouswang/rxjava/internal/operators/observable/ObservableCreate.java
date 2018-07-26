@@ -5,6 +5,7 @@ import com.example.aliouswang.rxjava.ObservableEmitter;
 import com.example.aliouswang.rxjava.ObservableOnSubcribe;
 import com.example.aliouswang.rxjava.Observer;
 import com.example.aliouswang.rxjava.disposables.Disposable;
+import com.example.aliouswang.rxjava.disposables.DisposableHelper;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,27 +43,39 @@ public final class ObservableCreate<T> extends Observable<T> {
 
         @Override
         public void dispose() {
-
+            DisposableHelper.dispose(this);
         }
 
         @Override
-        public boolean isDispose() {
-            return false;
+        public boolean isDisposed() {
+            return DisposableHelper.isDisposed(get());
         }
 
         @Override
         public void onNext(T value) {
-
+            if (value == null) {
+                onError(new NullPointerException("onNext called with null. no allowed in rxjava 2.x"));
+                return;
+            }
+            if (!isDisposed()) {
+                observer.onNext(value);
+            }
         }
 
         @Override
         public void onError(Throwable error) {
-
+            tryOnError(error);
         }
 
         @Override
         public void onComplete() {
-
+            if (!isDisposed()) {
+                try {
+                    observer.onComplete();
+                } finally {
+                    dispose();
+                }
+            }
         }
 
         @Override
@@ -70,10 +83,7 @@ public final class ObservableCreate<T> extends Observable<T> {
 
         }
 
-        @Override
-        public boolean isDisposed() {
-            return false;
-        }
+
 
         @Override
         public ObservableEmitter<T> serialize() {
@@ -82,6 +92,17 @@ public final class ObservableCreate<T> extends Observable<T> {
 
         @Override
         public boolean tryOnError(Throwable t) {
+            if (t == null) {
+                t = new NullPointerException("onError called with null");
+            }
+            if (!isDisposed()) {
+                try {
+                    observer.onError(t);
+                }catch (Exception e) {
+                    dispose();
+                }
+                return true;
+            }
             return false;
         }
     }

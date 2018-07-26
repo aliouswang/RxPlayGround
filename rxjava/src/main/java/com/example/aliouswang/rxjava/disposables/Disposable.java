@@ -8,6 +8,6 @@ public interface Disposable {
 
     void dispose();
 
-    boolean isDispose();
+    boolean isDisposed();
 
 }

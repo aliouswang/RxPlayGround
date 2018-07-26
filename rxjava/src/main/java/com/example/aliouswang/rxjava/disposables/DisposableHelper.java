@@ -45,7 +45,11 @@ public enum DisposableHelper implements Disposable{
     }
 
     @Override
-    public boolean isDispose() {
+    public boolean isDisposed() {
         return false;
+    }
+
+    public static boolean isDisposed(Disposable d) {
+        return d == DISPOSED;
     }
 }

@@ -37,7 +37,7 @@ public final class LambdaObserver<T> extends AtomicReference<Disposable>
     }
 
     @Override
-    public boolean isDispose() {
+    public boolean isDisposed() {
         return get() == DisposableHelper.DISPOSED;
     }
 
@@ -55,7 +55,7 @@ public final class LambdaObserver<T> extends AtomicReference<Disposable>
 
     @Override
     public void onNext(T t) {
-        if (!isDispose()) {
+        if (!isDisposed()) {
             try {
                 onNext.accept(t);
             } catch (Throwable e) {
@@ -67,7 +67,7 @@ public final class LambdaObserver<T> extends AtomicReference<Disposable>
 
     @Override
     public void onComplete() {
-        if (!isDispose()) {
+        if (!isDisposed()) {
             lazySet(DisposableHelper.DISPOSED);
             try {
                 onComplete.run();
@@ -79,7 +79,7 @@ public final class LambdaObserver<T> extends AtomicReference<Disposable>
 
     @Override
     public void onError(Throwable e) {
-        if (!isDispose()) {
+        if (!isDisposed()) {
             lazySet(DisposableHelper.DISPOSED);
             try {
                 onError.accept(e);

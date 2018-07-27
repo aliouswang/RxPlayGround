@@ -30,5 +30,6 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
 
-    compile 'io.reactivex.rxjava2:rxjava:2.1.17'
+//    compile 'io.reactivex.rxjava2:rxjava:2.1.17'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.2'
 }

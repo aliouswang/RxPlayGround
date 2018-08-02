@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn_test_subscribe;
     Button btn_test_observer;
+    Button btn_test_switch_map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +20,28 @@ public class MainActivity extends AppCompatActivity {
 
         btn_test_subscribe = findViewById(R.id.btn_test_subscribe);
         btn_test_observer = findViewById(R.id.btn_test_observer);
+        btn_test_switch_map = findViewById(R.id.btn_test_switch_map);
+
+        btn_test_switch_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RxDemo.test_switchmap();
+            }
+        });
+
+        btn_test_observer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                RxDemo.subscribe_observer_map_subscribe_observer_map();
+                RxDemo.test_concatmap();
+            }
+        });
 
         btn_test_subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RxDemo.subscribe_observer_map();
+                RxDemo.test_flatmap();
+//                RxDemo.subscribe_observer_map();
 //                Observable.create(new ObservableOnSubscribe<String>() {
 //                    @Override
 //                    public void subscribe(ObservableEmitter<String> emitter) throws Exception {
